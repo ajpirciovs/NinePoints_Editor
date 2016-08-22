@@ -26,7 +26,9 @@ class NinePoints_Editor_Block_Adminhtml_Catalog_Helper_Form_Wysiwyg_Content exte
         $config['use_container']         = true;
         $config['container_class']       = 'hor-scroll';
 
-        $form->addField($this->getData('editor_element_id'), 'ckeditor', array(
+        $fieldType = (Mage::getStoreConfig('cms/wysiwyg/use_ckeditor')) ? 'ckeditor' : 'editor';
+
+        $form->addField($this->getData('editor_element_id'), $fieldType, array(
             'name'      => 'content',
             'style'     => 'width:725px;height:460px',
             'required'  => true,

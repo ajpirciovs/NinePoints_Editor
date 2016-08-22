@@ -2,7 +2,7 @@
 /**
  * Created by NinePoints Co., LTD
  * User: ndlinh
- * Date: 
+ * Date:
  *
  * Copyright © NinePoints Co., LTD. All Rights Reserved.
  */
@@ -17,15 +17,29 @@ class NinePoints_Editor_Block_Adminhtml_Catalog_Helper_Form_Wysiwyg extends Vari
     {
         $html = parent::getAfterElementHtml();
         if ($this->getIsWysiwygEnabled()) {
-            $disabled = ($this->getDisabled() || $this->getReadonly());
-            $html .= Mage::getSingleton('core/layout')
-                ->createBlock('adminhtml/widget_button', '', array(
-                    'label'   => Mage::helper('catalog')->__('Toggle WYSIWYG Editor'),
-                    'type'    => 'button',
-                    'disabled' => $disabled,
-                    'class' => ($disabled) ? 'disabled btn-wysiwyg' : 'btn-wysiwyg',
-                    'onclick' => 'advEditorToggle(\'' . $this->getHtmlId() .'\')'
-                ))->toHtml();
+            if (Mage::getStoreConfig('cms/wysiwyg/use_ckeditor')) {
+                $disabled = ($this->getDisabled() || $this->getReadonly());
+                $html .= Mage::getSingleton('core/layout')
+                    ->createBlock('adminhtml/widget_button', '', array(
+                        'label'   => Mage::helper('catalog')->__('Toggle WYSIWYG Editor'),
+                        'type'    => 'button',
+                        'disabled' => $disabled,
+                        'class' => ($disabled) ? 'disabled btn-wysiwyg' : 'btn-wysiwyg',
+                        'onclick' => 'advEditorToggle(\'' . $this->getHtmlId() .'\')'
+                    ))->toHtml();
+            }
+            else {
+                $disabled = ($this->getDisabled() || $this->getReadonly());
+                $html .= Mage::getSingleton('core/layout')
+                    ->createBlock('adminhtml/widget_button', '', array(
+                        'label'   => Mage::helper('catalog')->__('WYSIWYG Editor'),
+                        'type'    => 'button',
+                        'disabled' => $disabled,
+                        'class' => 'btn-wysiwyg',
+                        'onclick' => 'catalogWysiwygEditor.open(\''.Mage::helper('adminhtml')->getUrl('*/*/wysiwyg').'\', \''.$this->getHtmlId().'\')'
+                    ))->toHtml();
+            }
+
         }
         return $html;
     }
